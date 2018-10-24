@@ -6,8 +6,12 @@ import java.util.Random;
 
 public class Tabuleiro {
 
-	private static final int TAMANHO = 9;
-
+	private static final int TAMANHO = 30;
+	private static final String ROBO = " RBO ";
+	private static final String FIM = " FIM ";
+	private static final String OBSTACULO = "  X  ";
+	
+	
 	public String tabuleiro[][];
 	public int coordenadaFim[] = new int[2];
 
@@ -32,16 +36,16 @@ public class Tabuleiro {
 			for (int j = 0; j < TAMANHO; j++) {
 
 				if (i == 0 && j == 0) {
-					tabuleiro[i][j] = "RBO";
+					tabuleiro[i][j] = ROBO;
 					continue;
 				}
 
 				if (i == coordenadaFim[0] && j == coordenadaFim[1]) {
-					tabuleiro[i][j] = "FIM";
+					tabuleiro[i][j] = FIM;
 					continue;
 				}
 
-				tabuleiro[i][j] = i + "," + j;
+				tabuleiro[i][j] = String.format("%02d", i) + "," + String.format("%02d", j);
 
 			}
 		}
@@ -53,10 +57,11 @@ public class Tabuleiro {
 
 		for (int i = 0; i < TAMANHO; i++) {
 			for (int j = 0; j < TAMANHO; j++) {
-				System.out.print(" | " + tabuleiro[i][j]);
+					System.out.print("|" + tabuleiro[i][j]);
 			}
-			System.out.print(" |");
+			System.out.print("|");
 			System.out.println("");
+
 		}
 		System.out.println("");
 	}
@@ -64,13 +69,13 @@ public class Tabuleiro {
 	private void atualizarPosicaoAgente() {
 		if (this.robo != null) {
 			PosicaoXY posAgente = this.robo.getPosicao();
-			tabuleiro[posAgente.getPosicaoX()][posAgente.getPosicaoY()] = "RBO";
+			tabuleiro[posAgente.getPosicaoX()][posAgente.getPosicaoY()] = ROBO;
 		}
 	}
 
 	public void limpar() {
 		PosicaoXY posicao = this.robo.getPosicao();
-		tabuleiro[posicao.getPosicaoX()][posicao.getPosicaoY()] = " - ";
+		tabuleiro[posicao.getPosicaoX()][posicao.getPosicaoY()] = " --- ";
 	}
 
 	public String retornarValorPosicaoLabirinto(PosicaoXY posicao) {
@@ -98,8 +103,8 @@ public class Tabuleiro {
 			int y = 0;
 
 			while ((x == 0 || x == TAMANHO - 1) || (y == 0 || y == TAMANHO - 1)) {
-				x = gerador.nextInt(9);
-				y = gerador.nextInt(9);
+				x = gerador.nextInt(29);
+				y = gerador.nextInt(29);
 
 				for (int j = 0; j < anterioresDeX.size(); j++) {
 					if ((anterioresDeX.get(j) == x && anterioresDeY.get(j) == y)
@@ -124,45 +129,45 @@ public class Tabuleiro {
 
 			switch (tipoObstaculo) {
 			case 0:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x - 1][y] = " X ";
-				this.tabuleiro[x - 1][y + 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x - 1][y] = OBSTACULO;
+				this.tabuleiro[x - 1][y + 1] = OBSTACULO;
 				break;
 			case 1:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x - 1][y] = " X ";
-				this.tabuleiro[x - 1][y - 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x - 1][y] = OBSTACULO;
+				this.tabuleiro[x - 1][y - 1] = OBSTACULO;
 				break;
 			case 2:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x][y - 1] = " X ";
-				this.tabuleiro[x - 1][y - 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x][y - 1] = OBSTACULO;
+				this.tabuleiro[x - 1][y - 1] = OBSTACULO;
 				break;
 			case 3:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x][y - 1] = " X ";
-				this.tabuleiro[x + 1][y - 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x][y - 1] = OBSTACULO;
+				this.tabuleiro[x + 1][y - 1] = OBSTACULO;
 				break;
 			case 4:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x][y + 1] = " X ";
-				this.tabuleiro[x - 1][y + 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x][y + 1] = OBSTACULO;
+				this.tabuleiro[x - 1][y + 1] = OBSTACULO;
 				break;
 			case 5:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x][y + 1] = " X ";
-				this.tabuleiro[x + 1][y + 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x][y + 1] = OBSTACULO;
+				this.tabuleiro[x + 1][y + 1] = OBSTACULO;
 
 				break;
 			case 6:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x + 1][y] = " X ";
-				this.tabuleiro[x + 1][y - 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x + 1][y] = OBSTACULO;
+				this.tabuleiro[x + 1][y - 1] = OBSTACULO;
 				break;
 			case 7:
-				this.tabuleiro[x][y] = " X ";
-				this.tabuleiro[x + 1][y] = " X ";
-				this.tabuleiro[x + 1][y + 1] = " X ";
+				this.tabuleiro[x][y] = OBSTACULO;
+				this.tabuleiro[x + 1][y] = OBSTACULO;
+				this.tabuleiro[x + 1][y + 1] = OBSTACULO;
 				break;
 			}
 		}

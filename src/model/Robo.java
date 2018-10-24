@@ -2,6 +2,8 @@ package model;
 
 public class Robo {
 
+	private static final String OBSTACULO = " X ";
+
 	private Tabuleiro tabuleiro;
 	private MovimentosTabuleiro movimento;
 
@@ -9,6 +11,7 @@ public class Robo {
 	private int pilhaMovimentos;
 	private boolean terminou;
 
+	String distanciaEsquerda;
 	String distanciaDireita;
 	String distanciaCima;
 	String distanciaBaixo;
@@ -31,7 +34,7 @@ public class Robo {
 //			return;
 //		}
 //		
-//		if (valor.equals("RBO") || valor.equals(" X ") ) {
+//		if (valor.equals("RBO") || valor.equals(OBSTACULO) ) {
 //			proximoMovimento();
 //			return;
 ////			aumentarPilha();
@@ -41,31 +44,55 @@ public class Robo {
 //			this.tabuleiro.limpar();
 //			this.posicaoXY = proximoMovimento;
 //		}
-		
+
 		PosicaoXY posicaoRobo = getPosicao();
 		String valorCimaDist1 = null;
 		String valorCimaDist2 = null;
+
+		String valorBaixoDist1;
+		String valorBaixoDist2;
+
+		String valorDireitaDist1;
+		String valorDireitaDist2;
 		
+		String valorEsquerdaDist1;
+		String valorEsquerdaDist2;
+
+//		// Lado esquerdo
+//		if (posicaoRobo.getPosicaoY() > 1) {
+//			valorEsquerdaDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 1];
+//			valorEsquerdaDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 2];
+//			distanciaEsquerda = analisaDistanciaObstaculo(valorEsquerdaDist1, valorEsquerdaDist2);
+//		} else {
+//			distanciaEsquerda = "P";
+//		}
+
 		// Lado direito
-		String valorDireitaDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 1];
-		String valorDireitaDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 2];
+		if (posicaoRobo.getPosicaoY() < this.tabuleiro.getTamanhotabuleiro() - 2) {
+			valorDireitaDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 1];
+			valorDireitaDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX()][posicaoRobo.getPosicaoY() + 2];
+			distanciaDireita = analisaDistanciaObstaculo(valorDireitaDist1, valorDireitaDist2);
+		} else {
+			distanciaDireita = "P";
+		}
 
 		// Baixo
-		String valorBaixoDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() + 1][posicaoRobo.getPosicaoY()];
-		String valorBaixoDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() + 2][posicaoRobo.getPosicaoY()];
+		if (posicaoRobo.getPosicaoX() < this.tabuleiro.getTamanhotabuleiro() - 2) {
+			valorBaixoDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() + 1][posicaoRobo.getPosicaoY()];
+			valorBaixoDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() + 2][posicaoRobo.getPosicaoY()];
+			distanciaBaixo = analisaDistanciaObstaculo(valorBaixoDist1, valorBaixoDist2);
+		} else {
+			distanciaBaixo = "P";
+		}
 
 		// Cima
-		if(posicaoRobo.getPosicaoX() > 1) {
+		if (posicaoRobo.getPosicaoX() > 1) {
 			valorCimaDist1 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() - 1][posicaoRobo.getPosicaoY()];
 			valorCimaDist2 = this.tabuleiro.tabuleiro[posicaoRobo.getPosicaoX() - 2][posicaoRobo.getPosicaoY()];
 			distanciaCima = analisaDistanciaObstaculo(valorCimaDist1, valorCimaDist2);
 		} else {
 			distanciaCima = "P";
 		}
-
-		distanciaDireita = analisaDistanciaObstaculo(valorDireitaDist1, valorDireitaDist2);
-		distanciaBaixo = analisaDistanciaObstaculo(valorBaixoDist1, valorBaixoDist2);
-		
 
 		if (distanciaDireita == "P" && distanciaCima == "P" && distanciaBaixo == "DB") {
 			this.movimento = MovimentosTabuleiro.BAIXO;
@@ -84,9 +111,9 @@ public class Robo {
 		} else {
 			this.movimento = MovimentosTabuleiro.DIREITA;
 		}
-		
+
 		PosicaoXY proximoMovimento = retornarMovimento();
-		System.err.println(this.movimento);
+		System.out.println(this.movimento);
 		System.out.println(distanciaDireita);
 		this.tabuleiro.limpar();
 		this.posicaoXY = retornarMovimento();
@@ -95,9 +122,9 @@ public class Robo {
 
 	private String analisaDistanciaObstaculo(String valorDist1, String valorDist2) {
 
-		if (valorDist1 == " X ") {
+		if (valorDist1 == OBSTACULO) {
 			return "P";
-		} else if (valorDist2 == " X ") {
+		} else if (valorDist2 == OBSTACULO) {
 			return "DB";
 		} else {
 			return "L";
@@ -129,25 +156,27 @@ public class Robo {
 		int retornoPosX = this.posicaoXY.getPosicaoX();
 		int retornoPosY = this.posicaoXY.getPosicaoY();
 
+		int tamanhoDoPasso = 3;
+
 		switch (movimento) {
 		case CIMA:
 			if (retornoPosX > 0) {
-				retornoPosX -= 1;
+				retornoPosX -= tamanhoDoPasso;
 			}
 			break;
 		case BAIXO:
 			if (retornoPosX < this.tabuleiro.getTamanhotabuleiro() - 1) {
-				retornoPosX += 1;
+				retornoPosX += tamanhoDoPasso;
 			}
 			break;
 		case ESQUERDA:
 			if (retornoPosY > 0) {
-				retornoPosY -= 1;
+				retornoPosY -= tamanhoDoPasso;
 			}
 			break;
 		case DIREITA:
 			if (retornoPosY < this.tabuleiro.getTamanhotabuleiro() - 1) {
-				retornoPosY += 1;
+				retornoPosY += tamanhoDoPasso;
 			}
 			break;
 		}
