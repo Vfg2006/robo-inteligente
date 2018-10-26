@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import utils.Constantes;
+
 public class Tabuleiro {
 
-	private static final int TAMANHO = 30;
-	private static final String ROBO = " RBO ";
-	private static final String FIM = " FIM ";
-	private static final String OBSTACULO = "  X  ";
-	
-	
 	public String tabuleiro[][];
 	public int coordenadaFim[] = new int[2];
 
@@ -30,22 +26,22 @@ public class Tabuleiro {
 
 	private void construirTabuleiro() {
 
-		tabuleiro = new String[TAMANHO][TAMANHO];
+		tabuleiro = new String[Constantes.TAMANHO][Constantes.TAMANHO];
 
-		for (int i = 0; i < TAMANHO; i++) {
-			for (int j = 0; j < TAMANHO; j++) {
+		for (int i = 0; i < Constantes.TAMANHO; i++) {
+			for (int j = 0; j < Constantes.TAMANHO; j++) {
 
 				if (i == 0 && j == 0) {
-					tabuleiro[i][j] = ROBO;
+					tabuleiro[i][j] = Constantes.ROBO;
 					continue;
 				}
 
 				if (i == coordenadaFim[0] && j == coordenadaFim[1]) {
-					tabuleiro[i][j] = FIM;
+					tabuleiro[i][j] = Constantes.FIM;
 					continue;
 				}
 
-				tabuleiro[i][j] = String.format("%02d", i) + "," + String.format("%02d", j);
+				tabuleiro[i][j] = Constantes.UNIDADE_TAB;
 
 			}
 		}
@@ -55,8 +51,8 @@ public class Tabuleiro {
 	public void exibirTabuleiro() {
 		atualizarPosicaoAgente();
 
-		for (int i = 0; i < TAMANHO; i++) {
-			for (int j = 0; j < TAMANHO; j++) {
+		for (int i = 0; i < Constantes.TAMANHO; i++) {
+			for (int j = 0; j < Constantes.TAMANHO; j++) {
 					System.out.print("|" + tabuleiro[i][j]);
 			}
 			System.out.print("|");
@@ -69,13 +65,13 @@ public class Tabuleiro {
 	private void atualizarPosicaoAgente() {
 		if (this.robo != null) {
 			PosicaoXY posAgente = this.robo.getPosicao();
-			tabuleiro[posAgente.getPosicaoX()][posAgente.getPosicaoY()] = ROBO;
+			tabuleiro[posAgente.getPosicaoX()][posAgente.getPosicaoY()] = Constantes.ROBO;
 		}
 	}
 
-	public void limpar() {
+	public void limparCaminhoAnterior() {
 		PosicaoXY posicao = this.robo.getPosicao();
-		tabuleiro[posicao.getPosicaoX()][posicao.getPosicaoY()] = " --- ";
+		tabuleiro[posicao.getPosicaoX()][posicao.getPosicaoY()] = Constantes.UNIDADE_TAB;
 	}
 
 	public String retornarValorPosicaoLabirinto(PosicaoXY posicao) {
@@ -83,7 +79,7 @@ public class Tabuleiro {
 	}
 
 	public int getTamanhotabuleiro() {
-		return TAMANHO;
+		return Constantes.TAMANHO;
 	}
 
 	public void gerarObstaculos(int numObstaculos) {
@@ -102,7 +98,7 @@ public class Tabuleiro {
 			int x = 0;
 			int y = 0;
 
-			while ((x == 0 || x == TAMANHO - 1) || (y == 0 || y == TAMANHO - 1)) {
+			while ((x == 0 || x == Constantes.TAMANHO - 1) || (y == 0 || y == Constantes.TAMANHO - 1)) {
 				x = gerador.nextInt(29);
 				y = gerador.nextInt(29);
 
@@ -129,45 +125,45 @@ public class Tabuleiro {
 
 			switch (tipoObstaculo) {
 			case 0:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x - 1][y] = OBSTACULO;
-				this.tabuleiro[x - 1][y + 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y + 1] = Constantes.OBSTACULO;
 				break;
 			case 1:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x - 1][y] = OBSTACULO;
-				this.tabuleiro[x - 1][y - 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y - 1] = Constantes.OBSTACULO;
 				break;
 			case 2:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x][y - 1] = OBSTACULO;
-				this.tabuleiro[x - 1][y - 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x][y - 1] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y - 1] = Constantes.OBSTACULO;
 				break;
 			case 3:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x][y - 1] = OBSTACULO;
-				this.tabuleiro[x + 1][y - 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x][y - 1] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y - 1] = Constantes.OBSTACULO;
 				break;
 			case 4:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x][y + 1] = OBSTACULO;
-				this.tabuleiro[x - 1][y + 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x][y + 1] = Constantes.OBSTACULO;
+				this.tabuleiro[x - 1][y + 1] = Constantes.OBSTACULO;
 				break;
 			case 5:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x][y + 1] = OBSTACULO;
-				this.tabuleiro[x + 1][y + 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x][y + 1] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y + 1] = Constantes.OBSTACULO;
 
 				break;
 			case 6:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x + 1][y] = OBSTACULO;
-				this.tabuleiro[x + 1][y - 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y - 1] = Constantes.OBSTACULO;
 				break;
 			case 7:
-				this.tabuleiro[x][y] = OBSTACULO;
-				this.tabuleiro[x + 1][y] = OBSTACULO;
-				this.tabuleiro[x + 1][y + 1] = OBSTACULO;
+				this.tabuleiro[x][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y] = Constantes.OBSTACULO;
+				this.tabuleiro[x + 1][y + 1] = Constantes.OBSTACULO;
 				break;
 			}
 		}

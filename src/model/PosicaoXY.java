@@ -4,7 +4,7 @@ public class PosicaoXY {
 
 	private int posicaoX;
 	private int posicaoY;
-	
+
 	public PosicaoXY() {
 		this.posicaoX = 0;
 		this.posicaoY = 0;
@@ -31,4 +31,8 @@ public class PosicaoXY {
 		this.posicaoY = posicaoY;
 	}
 
+	@Override
+	public String toString() {
+		return "Posição X : " + this.posicaoX + ", Posicao Y: " + this.posicaoY ;
+	}
 }
